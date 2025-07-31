@@ -1,0 +1,16 @@
+export const locations = {
+  home: '/',
+  films: '/films',
+  filmDetail: '/films/:filmId',
+  people: '/people',
+  personDetail: '/people/:personId',
+  planets: '/planets',
+  planetDetail: '/planets/:planetId',
+  species: '/species',
+  speciesDetail: '/species/:speciesId',
+  starships: '/starships',
+  starshipDetail: '/starships/:starshipId',
+  vehicles: '/vehicles',
+  vehicleDetail: '/vehicles/:vehicleId',
+  notFound: '*',
+} as const
