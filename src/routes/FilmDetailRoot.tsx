@@ -1,4 +1,4 @@
-import { CircularProgress, Stack, Typography } from '@mui/material'
+import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import type {
@@ -13,6 +13,7 @@ import { Films } from 'swapi-ts'
 
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
+import UnorderedList from '../components/UnorderedList'
 import { toRoman } from '../utils/toRoman'
 
 const FilmDetailRoot = () => {
@@ -46,66 +47,82 @@ const FilmDetailRoot = () => {
       })
   }, [filmId])
 
-  const toUnorderedList = (
-    items: IPeople[] | IPlanet[] | ISpecie[] | IStarship[] | IVehicle[],
-  ) => (
-    <ul>
-      {items.map((item) => (
-        <li key={item.name}>{item.name}</li>
-      ))}
-    </ul>
-  )
-
   if (loading || !film) return <CircularProgress />
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h5" gutterBottom>
         {film.title}
       </Typography>
 
       <Collapse
         title="General Info"
         content={
-          <Stack spacing={1} sx={{ mb: 4 }}>
-            <InfoRow
-              label="Episode"
-              value={toRoman(parseInt(film.episode_id))}
-            />
-            <InfoRow label="Director" value={film.director} />
-            <InfoRow label="Producer" value={film.producer} />
-            <InfoRow
-              label="Release date"
-              value={new Date(film.release_date).toLocaleDateString('en-GB')}
-            />
-            <InfoRow label="Opening Crawl" value={film.opening_crawl} />
-          </Stack>
+          <Grid container spacing={2} alignItems="flex-start" sx={{ mb: 4 }}>
+            <Grid size={{ xs: 12, sm: 8 }}>
+              <Stack spacing={1}>
+                <InfoRow
+                  label="Episode"
+                  value={toRoman(parseInt(film.episode_id))}
+                />
+                <InfoRow label="Director" value={film.director} />
+                <InfoRow label="Producer" value={film.producer} />
+                <InfoRow
+                  label="Release date"
+                  value={new Date(film.release_date).toLocaleDateString(
+                    'en-GB',
+                  )}
+                />
+                <InfoRow label="Opening Crawl" value={film.opening_crawl} />
+              </Stack>
+            </Grid>
+
+            <Grid
+              size={{ sm: 4 }}
+              sx={{
+                display: {
+                  xs: 'none',
+                  sm: 'block',
+                },
+              }}
+            >
+              <img
+                src={`/covers/${film.episode_id}.webp`}
+                alt={film.title}
+                style={{
+                  width: '100%',
+                  borderRadius: 8,
+                  objectFit: 'cover',
+                }}
+              />
+            </Grid>
+          </Grid>
         }
       />
 
       <Collapse
         title="People"
-        content={toUnorderedList(film.characters as IPeople[])}
+        content={<UnorderedList items={film.characters as IPeople[]} />}
       />
 
       <Collapse
         title="Planets"
-        content={toUnorderedList(film.planets as IPlanet[])}
+        content={<UnorderedList items={film.planets as IPlanet[]} />}
       />
 
       <Collapse
         title="Species"
-        content={toUnorderedList(film.species as ISpecie[])}
+        content={<UnorderedList items={film.species as ISpecie[]} />}
       />
 
       <Collapse
         title="Starships"
-        content={toUnorderedList(film.starships as IStarship[])}
+        content={<UnorderedList items={film.starships as IStarship[]} />}
       />
 
       <Collapse
         title="Vehicles"
-        content={toUnorderedList(film.vehicles as IVehicle[])}
+        content={<UnorderedList items={film.vehicles as IVehicle[]} />}
       />
     </>
   )

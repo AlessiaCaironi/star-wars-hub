@@ -1,0 +1,13 @@
+.toolbar {
+  justify-content: center;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo-img {
+  height: 20px;
+}

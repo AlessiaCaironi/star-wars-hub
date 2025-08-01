@@ -11,7 +11,12 @@ const InfoRow = ({ label, value }: InfoRowProps) => {
       <Typography variant="body1" fontWeight="bold">
         {label}:
       </Typography>
-      <Typography variant="body1" color="text.secondary">
+      <Typography
+        variant="body1"
+        color="text.secondary"
+        align="justify"
+        sx={{ display: 'block' }}
+      >
         {value}
       </Typography>
     </Stack>

@@ -1,9 +1,10 @@
 import {
   Card,
-  CardHeader,
+  CardContent,
   CardMedia,
   CircularProgress,
   Grid,
+  Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -20,9 +21,7 @@ const FilmListRoot = () => {
   useEffect(() => {
     Films.getPage().then((page) => {
       const sortedFilms = page.results.sort(
-        (a: IFilm, b: IFilm) =>
-          new Date(a.release_date).getTime() -
-          new Date(b.release_date).getTime(),
+        (a: IFilm, b: IFilm) => parseInt(a.episode_id) - parseInt(b.episode_id),
       )
       setFilms(sortedFilms)
     })
@@ -48,7 +47,15 @@ const FilmListRoot = () => {
               component="img"
               alt={film.title}
             />
-            <CardHeader title={film.title} />
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                Directed by {film.director}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Released on{' '}
+                {new Date(film.release_date).toLocaleDateString('en-GB')}
+              </Typography>
+            </CardContent>
           </Card>
         </Grid>
       ))}

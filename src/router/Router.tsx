@@ -6,30 +6,24 @@ interface RouterProps {
   routes: AppRoute[]
 }
 
-import { BrowserRouter } from 'react-router-dom'
+const Router = ({ routes }: RouterProps) => (
+  <RouterRoutes>
+    {routes.map((route) => {
+      const { path, component: Component, redirect } = route
 
-const Router = ({ routes }: RouterProps) => {
-  return (
-    <BrowserRouter>
-      <RouterRoutes>
-        {routes.map((route) => {
-          const { path, component: Component, redirect } = route
+      if (redirect) {
+        return (
+          <Route
+            key={path}
+            path={path}
+            element={<Navigate to={redirect} replace />}
+          />
+        )
+      }
 
-          if (redirect) {
-            return (
-              <Route
-                key={path}
-                path={path}
-                element={<Navigate to={redirect} replace />}
-              />
-            )
-          }
-
-          return <Route key={path} path={path} element={<Component />} />
-        })}
-      </RouterRoutes>
-    </BrowserRouter>
-  )
-}
+      return <Route key={path} path={path} element={<Component />} />
+    })}
+  </RouterRoutes>
+)
 
 export default Router
