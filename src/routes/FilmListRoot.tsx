@@ -12,7 +12,7 @@ import type { IFilm } from 'swapi-ts'
 import { Films } from 'swapi-ts'
 
 import { locations } from '../router/locations'
-import { buildPath } from '../utils/navigation'
+import { buildPath, extractIdFromUrl } from '../utils/navigation'
 
 const FilmListRoot = () => {
   const [films, setFilms] = useState<IFilm[]>()
@@ -36,7 +36,7 @@ const FilmListRoot = () => {
           <Card
             onClick={() => {
               const path = buildPath(locations.filmDetail, {
-                filmId: film.episode_id.toString(),
+                id: extractIdFromUrl(film.url),
               })
               navigate(path)
             }}

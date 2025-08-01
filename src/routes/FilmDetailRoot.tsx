@@ -1,13 +1,14 @@
 import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import type {
-  IFilm,
-  IPeople,
-  IPlanet,
-  ISpecie,
-  IStarship,
-  IVehicle,
+import {
+  type IFilm,
+  type IPeople,
+  type IPlanet,
+  type ISpecie,
+  type IStarship,
+  type IVehicle,
+  ResourcesType,
 } from 'swapi-ts'
 import { Films } from 'swapi-ts'
 
@@ -17,16 +18,16 @@ import UnorderedList from '../components/UnorderedList'
 import { toRoman } from '../utils/toRoman'
 
 const FilmDetailRoot = () => {
-  const { filmId } = useParams<{ filmId: string }>()
+  const { id } = useParams<{ id: string }>()
   const [film, setFilm] = useState<IFilm>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!filmId) return
+    if (!id) return
 
     setLoading(true)
 
-    Films.find((f) => f.episode_id.toString() === filmId)
+    Films.find((f) => f.url.endsWith(`/${id}/`))
       .then(async (res) => {
         const filmResource = res.resources[0]
         if (!filmResource) return
@@ -45,7 +46,7 @@ const FilmDetailRoot = () => {
       .finally(() => {
         setLoading(false)
       })
-  }, [filmId])
+  }, [id])
 
   if (loading || !film) return <CircularProgress />
 
@@ -102,27 +103,52 @@ const FilmDetailRoot = () => {
 
       <Collapse
         title="People"
-        content={<UnorderedList items={film.characters as IPeople[]} />}
+        content={
+          <UnorderedList
+            items={film.characters as IPeople[]}
+            resourceType={ResourcesType.People}
+          />
+        }
       />
 
       <Collapse
         title="Planets"
-        content={<UnorderedList items={film.planets as IPlanet[]} />}
+        content={
+          <UnorderedList
+            items={film.planets as IPlanet[]}
+            resourceType={ResourcesType.Planets}
+          />
+        }
       />
 
       <Collapse
         title="Species"
-        content={<UnorderedList items={film.species as ISpecie[]} />}
+        content={
+          <UnorderedList
+            items={film.species as ISpecie[]}
+            resourceType={ResourcesType.Species}
+          />
+        }
       />
 
       <Collapse
         title="Starships"
-        content={<UnorderedList items={film.starships as IStarship[]} />}
+        content={
+          <UnorderedList
+            items={film.starships as IStarship[]}
+            resourceType={ResourcesType.Starships}
+          />
+        }
       />
 
       <Collapse
         title="Vehicles"
-        content={<UnorderedList items={film.vehicles as IVehicle[]} />}
+        content={
+          <UnorderedList
+            items={film.vehicles as IVehicle[]}
+            resourceType={ResourcesType.Vehicles}
+          />
+        }
       />
     </>
   )
