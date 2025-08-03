@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Stack, Typography } from '@mui/material'
+import { Grid, Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
@@ -11,6 +11,7 @@ import {
 
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
+import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 
 const SpeciesDetailRoot = () => {
@@ -20,8 +21,6 @@ const SpeciesDetailRoot = () => {
 
   useEffect(() => {
     if (!id) return
-
-    setLoading(true)
 
     Species.find((s) => s.url.endsWith(`/${id}/`))
       .then(async (res) => {
@@ -41,7 +40,7 @@ const SpeciesDetailRoot = () => {
       })
   }, [id])
 
-  if (loading || !species) return <CircularProgress />
+  if (loading || !species) return <Loading />
 
   return (
     <>

@@ -2,8 +2,8 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CircularProgress,
   Grid,
+  Stack,
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -11,55 +11,82 @@ import { useNavigate } from 'react-router-dom'
 import type { IFilm } from 'swapi-ts'
 import { Films } from 'swapi-ts'
 
+import Loading from '../components/Loading'
+import SelectSort, { type SortOption } from '../components/SelectSort'
 import { locations } from '../router/locations'
 import { buildPath, extractIdFromUrl } from '../utils/navigation'
 
 const FilmListRoot = () => {
   const [films, setFilms] = useState<IFilm[]>()
+  const [sortBy, setSortBy] = useState<SortOption>('episode')
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
-    Films.getPage().then((page) => {
-      const sortedFilms = page.results.sort(
-        (a: IFilm, b: IFilm) => parseInt(a.episode_id) - parseInt(b.episode_id),
-      )
-      setFilms(sortedFilms)
-    })
+    Films.getPage()
+      .then((page) => setFilms(page.results))
+      .catch((err) => {
+        console.error('Error loading films:', err)
+      })
+      .finally(() => setLoading(false))
   }, [])
 
-  if (!films) return <CircularProgress />
+  const sortedFilms =
+    films && films.length > 0
+      ? [...films].sort((a, b) => {
+          switch (sortBy) {
+            case 'release':
+              return (
+                new Date(a.release_date).getTime() -
+                new Date(b.release_date).getTime()
+              )
+            case 'episode':
+              return parseInt(a.episode_id) - parseInt(b.episode_id)
+            case 'title':
+              return a.title.localeCompare(b.title)
+            default:
+              return 0
+          }
+        })
+      : []
+
+  if (loading) return <Loading />
 
   return (
-    <Grid container spacing={3}>
-      {films.map((film) => (
-        <Grid key={film.episode_id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <Card
-            onClick={() => {
-              const path = buildPath(locations.filmDetail, {
-                id: extractIdFromUrl(film.url),
-              })
-              navigate(path)
-            }}
-            sx={{ cursor: 'pointer' }}
-          >
-            <CardMedia
-              image={`/covers/${film.episode_id}.webp`}
-              component="img"
-              alt={film.title}
-            />
-            <CardContent>
-              <Typography variant="body2" color="text.secondary">
-                Directed by {film.director}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Released on{' '}
-                {new Date(film.release_date).toLocaleDateString('en-GB')}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid>
+    <Stack spacing={3}>
+      <SelectSort value={sortBy} onChange={setSortBy} />
+
+      <Grid container spacing={3}>
+        {sortedFilms.map((film) => (
+          <Grid key={film.episode_id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <Card
+              onClick={() => {
+                const path = buildPath(locations.filmDetail, {
+                  id: extractIdFromUrl(film.url),
+                })
+                navigate(path)
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
+              <CardMedia
+                image={`/covers/${film.episode_id}.webp`}
+                component="img"
+                alt={film.title}
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  Directed by {film.director}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Released on{' '}
+                  {new Date(film.release_date).toLocaleDateString('en-GB')}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Stack>
   )
 }
 
