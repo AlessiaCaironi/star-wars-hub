@@ -112,7 +112,7 @@ const FilmDetailRoot = () => {
       />
 
       <Collapse
-        title="People"
+        title="Characters"
         content={
           <UnorderedList
             items={film.characters as IPeople[]}

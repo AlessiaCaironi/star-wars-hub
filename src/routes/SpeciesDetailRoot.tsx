@@ -88,7 +88,7 @@ const SpeciesDetailRoot = () => {
       />
 
       <Collapse
-        title="People"
+        title="Characters"
         content={
           <UnorderedList
             items={species.people as IPeople[]}

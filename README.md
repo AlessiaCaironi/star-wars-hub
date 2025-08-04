@@ -1,69 +1,85 @@
-# React + TypeScript + Vite
+# Star Wars Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Star Wars Hub is a React application that lets you explore the Star Wars universe through films and related resources, using [swapi-ts](https://github.com/AlessiaCaironi/swapi-ts) as the data source.
 
-Currently, two official plugins are available:
+## Technologies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React** with **TypeScript**
+- **Vite** with **SWC** as the build tool
+- **pnpm** as the package manager
 
-## Expanding the ESLint configuration
+## Dependencies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Material UI (MUI)** for customizable UI components and theming
+- **react-router-dom** for client-side routing and navigation
+- **swapi-ts** for fetching all film and resource data
+- **Prettier** and **ESLint** for code formatting and linting
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Home page:** Displays a list of Star Wars films as cards, ordered by release date, episode number or title. Each card shows the film's cover (with title and episode number), release date and director. Clicking a card navigates to the film details page.
+- **Film details:** Shows general information about the film (episode number, director, producer, release date and opening crawl) and a list of related resources (characters, planets, starships, vehicles, species). Clicking on a resource navigates to its detail page.
+- **Character details:** Shows general information about a character (gender, birth year, height, mass, hair color, eye color, skin color) and a list of related resources (homeworld, species, films, piloted vehicles and starships). Clicking on a resource navigates to its detail page.
+- **Planet details:** Shows general information about a planet (climate, terrain, population, diameter, gravity, rotation period, orbital period, surface water) and a list of related resources (residents and films). Clicking on a resource navigates to its detail page.
+- **Species details:** Shows general information about a species (classification, designation, average height, skin colors, hair colors, eye colors average lifespan, language) and a list of related resources (characters and films). Clicking on a resource navigates to its detail page.
+- **Starship details:** Shows general information about a starship (model, manufacturer, cost in credits, length, crew, passengers, starship class, hyperdrive rating) and a list of related resources (pilots and films). Clicking on a resource navigates to its detail page.
+- **Vehicle details:** Shows general information about a vehicle (model, manufacturer, cost in credits, length, crew, passengers, vehicle class) and a list of related resources (pilots and films). Clicking on a resource navigates to its detail page.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project Structure
+
+- **public/** - Film cover images and other static assets
+- **src/** - Source code
+  - `main.tsx` - Application entry point
+  - `App.tsx` - Main app component
+  - **components/** - Reusable UI components
+  - **router/** - Routing configuration
+  - **routes/** - Page components (Film, Character, Planet, etc.)
+  - **utils/** - Utility functions
+- `package.json` - Dependencies and scripts
+- `vite.config.ts` - Build configuration
+- `tsconfig.json` - TypeScript configuration
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (see `.nvmrc` for recommended version)
+- [pnpm](https://pnpm.io/) package manager
+
+### Installation
+
+Clone the repository and install dependencies:
+
+```sh
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running the App
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+pnpm run dev
 ```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Building for Production
+
+```sh
+pnpm build
+```
+
+### Linting & Formatting
+
+```sh
+pnpm lint
+```
+
+## API
+
+Data is fetched from [swapi-ts](https://github.com/AlessiaCaironi/swapi-ts), a TypeScript wrapper for [SWAPI](https://swapi.py4e.com).  
+This repository is a fork of [amitmtrn/swapi-ts](https://github.com/amitmtrn/swapi-ts); the only change is the API URL, since the original wrapper used swapi.dev, which currently has an invalid SSL certificate.
+
+## Future Improvements
+
+- Add a search feature to filter resources by type (e.g., characters, planets, etc.) and by name or title
+- Add a badge to the details pages to indicate the type of resource (e.g., character, planet, etc.)

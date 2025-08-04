@@ -117,7 +117,7 @@ const PersonDetailRoot = () => {
       />
 
       <Collapse
-        title="Vehicles"
+        title="Piloted Vehicles"
         content={
           <UnorderedList
             items={person.vehicles as IVehicle[]}
@@ -127,7 +127,7 @@ const PersonDetailRoot = () => {
       />
 
       <Collapse
-        title="Starships"
+        title="Piloted Starships"
         content={
           <UnorderedList
             items={person.starships as IStarship[]}
