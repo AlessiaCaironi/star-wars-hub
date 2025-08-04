@@ -14,6 +14,14 @@ import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 
+/**
+ * VehicleDetailRoot component displays detailed information about a specific Star Wars vehicle.
+ * It fetches the vehicle data based on the `id` parameter from the route, including related
+ * pilots and films. The component shows a loading indicator while data is being fetched,
+ * and renders collapsible sections for general info and related resources.
+ *
+ * @returns {JSX.Element} The rendered vehicle detail view.
+ */
 const VehicleDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
   const [vehicle, setVehicle] = useState<IVehicle>()

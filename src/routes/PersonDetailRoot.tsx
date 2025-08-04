@@ -17,6 +17,17 @@ import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 
+/**
+ * PersonDetailRoot component displays detailed information about a specific Star Wars character.
+ *
+ * It fetches the character data based on the `id` route parameter, including related resources
+ * such as homeworld, species, films, vehicles, and starships. The component shows a loading
+ * indicator while data is being fetched, and renders collapsible sections for general info
+ * and each related resource.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered person detail view.
+ */
 const PersonDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
   const [person, setPerson] = useState<IPeople>()

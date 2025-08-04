@@ -14,6 +14,16 @@ import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 
+/**
+ * SpeciesDetailRoot component displays detailed information about a specific Star Wars species.
+ *
+ * It fetches the species data based on the `id` route parameter, including related resources
+ * such as people and films. The component shows a loading indicator while data is being fetched,
+ * and renders collapsible sections for general info and related resources.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered species detail view, including general info, related people, and films.
+ */
 const SpeciesDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
   const [species, setSpecies] = useState<ISpecie>()

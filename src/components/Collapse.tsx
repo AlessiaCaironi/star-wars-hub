@@ -12,6 +12,15 @@ interface ICollapse {
   content: ReactNode
 }
 
+/**
+ * Collapse component is a panel component that displays a title and expandable content.
+ *
+ * @param title - The title displayed in the collapsed state.
+ * @param content - The content shown when the panel is expanded.
+ *
+ * @component
+ * @returns A Material-UI Accordion component with summary and details.
+ */
 const Collapse = ({ title, content }: ICollapse) => (
   <Accordion>
     <AccordionSummary

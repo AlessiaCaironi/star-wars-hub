@@ -1,4 +1,18 @@
+/**
+ * Converts an Arabic number to its Roman numeral representation.
+ *
+ * @param num - The number to convert (must be a positive integer).
+ * @returns A string representing the Roman numeral equivalent.
+ *
+ * @example
+ * toRoman(4); // "IV"
+ */
 export function toRoman(num: number): string {
+  if (!Number.isInteger(num) || num <= 0) {
+    console.error('Invalid input: num must be a positive integer.')
+    return ''
+  }
+
   const romanMap: [number, string][] = [
     [1000, 'M'],
     [900, 'CM'],

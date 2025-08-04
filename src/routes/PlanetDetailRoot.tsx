@@ -14,6 +14,16 @@ import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 
+/**
+ * PlanetDetailRoot component displays detailed information about a specific planet.
+ *
+ * It fetches planet data based on the `id` parameter from the route, including related resources
+ * such as its residents and films. The component shows a loading indicator while data is being fetched
+ * and renders collapsible sections for general info and each related resource.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered planet detail view.
+ */
 const PlanetDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
   const [planet, setPlanet] = useState<IPlanet>()

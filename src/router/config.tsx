@@ -10,12 +10,21 @@ import StarshipDetailRoot from '../routes/StarshipDetailRoot'
 import VehicleDetailRoot from '../routes/VehicleDetailRoot'
 import { locations } from './locations'
 
+/**
+ * Describes a route in the app.
+ */
 export interface Route {
+  /** The URL path for the route */
   path: string
+  /** The component to render for the route */
   component: ComponentType<any>
+  /** Optional redirect path */
   redirect?: string
 }
 
+/**
+ * All application routes.
+ */
 export const routes: Route[] = [
   {
     path: locations.home,

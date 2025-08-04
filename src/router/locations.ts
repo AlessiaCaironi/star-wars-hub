@@ -1,3 +1,6 @@
+/**
+ * App route definitions.
+ */
 export const locations = {
   home: '/',
   films: '/films',

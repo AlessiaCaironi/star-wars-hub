@@ -16,6 +16,17 @@ import SelectSort, { type SortOption } from '../components/SelectSort'
 import { locations } from '../router/locations'
 import { buildPath, extractIdFromUrl } from '../utils/navigation'
 
+/**
+ * FilmListRoot component displays a list of Star Wars films with sorting options.
+ *
+ * - Fetches film data from the API on mount.
+ * - Allows sorting by episode, release date, or title.
+ * - Shows a loading indicator while data is being fetched.
+ * - Renders each film as a clickable card, navigating to the film's detail page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered film list UI.
+ */
 const FilmListRoot = () => {
   const [films, setFilms] = useState<IFilm[]>()
   const [sortBy, setSortBy] = useState<SortOption>('episode')

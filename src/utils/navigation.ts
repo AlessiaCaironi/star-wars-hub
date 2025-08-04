@@ -2,6 +2,14 @@ import { ResourcesType } from 'swapi-ts'
 
 import { locations } from '../router/locations'
 
+/**
+ * Builds a URL path by replacing parameter placeholders with actual values.
+ *
+ * @param path - The URL path template containing placeholders (e.g., "/films/:id").
+ * @param params - An object mapping parameter names to their values.
+ * @returns The URL path with placeholders replaced by encoded parameter values.
+ *
+ */
 export const buildPath = (
   path: string,
   params: Record<string, string | number>,
@@ -13,6 +21,13 @@ export const buildPath = (
   )
 }
 
+/**
+ * Returns the navigation location string based on the provided resource type and detail flag.
+ *
+ * @param resourceType - The type of resource to determine the location for.
+ * @param details - If true, returns the detail location for the resource; otherwise, returns the list location.
+ * @returns The corresponding location string for the given resource type and detail flag.
+ */
 export const getLocation = (
   resourceType: ResourcesType,
   details: boolean,
@@ -44,6 +59,12 @@ export const getLocation = (
   return location
 }
 
+/**
+ * Extracts the last segment (ID) from a given URL string.
+ *
+ * @param url - The URL string to extract the ID from.
+ * @returns The extracted ID as a string.
+ */
 export const extractIdFromUrl = (url: string): string => {
   const parts = url.split('/').filter(Boolean)
   return parts[parts.length - 1]

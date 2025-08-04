@@ -7,6 +7,14 @@ import { routes } from './router/config'
 import { locations } from './router/locations'
 import Router from './router/Router'
 
+/**
+ * The main application component.
+ *
+ * Renders the top-level layout including the app bar with logo,
+ * and sets up routing for the application using React Router.
+ *
+ * @returns {JSX.Element} The rendered application container.
+ */
 const App = () => {
   return (
     <Container>

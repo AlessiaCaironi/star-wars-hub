@@ -18,6 +18,17 @@ interface UnorderedListProps {
   resourceType: ResourcesType
 }
 
+/**
+ * UnorderedList component renders an unordered list of items with clickable list buttons.
+ * Each item navigates to a detail page based on its resource type and ID extracted from its URL.
+ * The label for each item is determined by its "name" property (or "title" for films).
+ *
+ * @param items - Array of resource items to display in the list.
+ * @param resourceType - The type of resource being listed (one of ResourcesType).
+ *
+ * @component
+ * @returns A Material UI List component containing clickable ListItemButtons for each item.
+ */
 const UnorderedList = ({ items, resourceType }: UnorderedListProps) => {
   const navigate = useNavigate()
 

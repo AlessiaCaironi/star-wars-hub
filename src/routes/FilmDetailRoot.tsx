@@ -18,6 +18,17 @@ import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 import { toRoman } from '../utils/toRoman'
 
+/**
+ * FilmDetailRoot component displays detailed information about a specific Star Wars film.
+ *
+ * It fetches the film data based on the `id` route parameter, including related resources
+ * such as characters, planets, starships, vehicles, and species. The component shows a loading
+ * indicator while data is being fetched, and renders collapsible sections for general info and
+ * each related resource.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered film detail view.
+ */
 const FilmDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
   const [film, setFilm] = useState<IFilm>()

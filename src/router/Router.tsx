@@ -6,11 +6,21 @@ interface RouterProps {
   routes: AppRoute[]
 }
 
+/**
+ * Custom Router component that maps app routes to React Router <Route> elements.
+ * Handles both direct component rendering and route redirects.
+ *
+ * @param routes - Array of application routes to be mapped.
+ *
+ * @component
+ * @returns A custom Router component that maps app routes to React Router <Route> elements.
+ */
 const Router = ({ routes }: RouterProps) => (
   <RouterRoutes>
     {routes.map((route) => {
       const { path, component: Component, redirect } = route
 
+      // If the route has a redirect, render a <Navigate /> instead
       if (redirect) {
         return (
           <Route
@@ -21,6 +31,7 @@ const Router = ({ routes }: RouterProps) => (
         )
       }
 
+      // Otherwise render the associated component
       return <Route key={path} path={path} element={<Component />} />
     })}
   </RouterRoutes>

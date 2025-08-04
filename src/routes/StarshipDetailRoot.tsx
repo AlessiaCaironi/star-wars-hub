@@ -14,6 +14,14 @@ import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
 import UnorderedList from '../components/UnorderedList'
 
+/**
+ * StarshipDetailRoot component for displaying detailed information about a specific Star Wars starship.
+ *
+ * Fetches the starship data based on the `id` route parameter, including related resources, such as pilots and films.
+ * Shows a loading indicator while data is being fetched, and renders collapsible sections for general info and each related resource.
+ *
+ * @returns {JSX.Element} The rendered starship detail view.
+ */
 const StarshipDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
   const [starship, setStarship] = useState<IStarship>()
