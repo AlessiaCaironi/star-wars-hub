@@ -1,9 +1,9 @@
 import {
+  Box,
   Card,
   CardContent,
   CardMedia,
   Grid,
-  Stack,
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
@@ -64,10 +64,10 @@ const FilmListRoot = () => {
   if (loading) return <Loading />
 
   return (
-    <Stack spacing={3}>
+    <Box sx={{ position: 'relative', p: 2 }}>
       <SelectSort value={sortBy} onChange={setSortBy} />
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ mt: 2 }}>
         {sortedFilms.map((film) => (
           <Grid key={film.episode_id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
             <Card
@@ -97,7 +97,7 @@ const FilmListRoot = () => {
           </Grid>
         ))}
       </Grid>
-    </Stack>
+    </Box>
   )
 }
 

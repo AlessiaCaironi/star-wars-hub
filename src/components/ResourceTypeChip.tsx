@@ -41,7 +41,7 @@ const ContentTypeChip = ({ type }: ContentTypeChipProps) => {
   return (
     <Chip
       label={getChipLabel(type)}
-      variant="outlined"
+      variant="filled"
       color="primary"
       size="medium"
       sx={{

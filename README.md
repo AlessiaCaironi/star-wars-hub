@@ -82,3 +82,4 @@ This repository is a fork of [amitmtrn/swapi-ts](https://github.com/amitmtrn/swa
 ## Future Improvements
 
 - Add a search feature to filter resources by type (e.g., characters, planets, etc.) and by name or title
+- Persist the selected sort option for films

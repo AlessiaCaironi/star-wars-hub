@@ -31,7 +31,7 @@ const App = () => {
         <BrowserRouter>
           <AppBar
             position="static"
-            sx={{ mb: 2, mt: 1, background: 'none', boxShadow: 'none' }}
+            sx={{ mb: 1, mt: 1, background: 'none', boxShadow: 'none' }}
           >
             <Toolbar className="toolbar">
               <Box component={Link} to={locations.home} className="logo-link">
