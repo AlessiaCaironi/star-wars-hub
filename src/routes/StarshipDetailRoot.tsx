@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
@@ -12,6 +12,7 @@ import {
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
+import PageHeader from '../components/PageHeader'
 import UnorderedList from '../components/UnorderedList'
 
 /**
@@ -51,10 +52,11 @@ const StarshipDetailRoot = () => {
   if (loading || !starship) return <Loading />
 
   return (
-    <>
-      <Typography variant="h5" gutterBottom>
-        {starship.name}
-      </Typography>
+    <Box sx={{ position: 'relative', p: 2 }}>
+      <PageHeader
+        title={starship.name}
+        resourceType={ResourcesType.Starships}
+      />
 
       <Collapse
         title="General Info"
@@ -104,7 +106,7 @@ const StarshipDetailRoot = () => {
           />
         }
       />
-    </>
+    </Box>
   )
 }
 

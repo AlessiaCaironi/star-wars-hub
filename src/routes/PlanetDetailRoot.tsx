@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
@@ -12,6 +12,7 @@ import {
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
+import PageHeader from '../components/PageHeader'
 import UnorderedList from '../components/UnorderedList'
 
 /**
@@ -53,10 +54,8 @@ const PlanetDetailRoot = () => {
   if (loading || !planet) return <Loading />
 
   return (
-    <>
-      <Typography variant="h5" gutterBottom>
-        {planet.name}
-      </Typography>
+    <Box sx={{ position: 'relative', p: 2 }}>
+      <PageHeader title={planet.name} resourceType={ResourcesType.Planets} />
 
       <Collapse
         title="General Info"
@@ -106,7 +105,7 @@ const PlanetDetailRoot = () => {
           />
         }
       />
-    </>
+    </Box>
   )
 }
 

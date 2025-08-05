@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
@@ -15,6 +15,7 @@ import {
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
+import PageHeader from '../components/PageHeader'
 import UnorderedList from '../components/UnorderedList'
 
 /**
@@ -60,10 +61,8 @@ const PersonDetailRoot = () => {
   if (loading || !person) return <Loading />
 
   return (
-    <>
-      <Typography variant="h5" gutterBottom>
-        {person.name}
-      </Typography>
+    <Box sx={{ position: 'relative', p: 2 }}>
+      <PageHeader title={person.name} resourceType={ResourcesType.People} />
 
       <Collapse
         title="General Info"
@@ -135,7 +134,7 @@ const PersonDetailRoot = () => {
           />
         }
       />
-    </>
+    </Box>
   )
 }
 

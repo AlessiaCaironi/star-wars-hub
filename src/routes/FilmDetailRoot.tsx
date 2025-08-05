@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
@@ -15,6 +15,7 @@ import { Films } from 'swapi-ts'
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
 import Loading from '../components/Loading'
+import PageHeader from '../components/PageHeader'
 import UnorderedList from '../components/UnorderedList'
 import { toRoman } from '../utils/toRoman'
 
@@ -61,10 +62,8 @@ const FilmDetailRoot = () => {
   if (loading || !film) return <Loading />
 
   return (
-    <>
-      <Typography variant="h5" gutterBottom>
-        {film.title}
-      </Typography>
+    <Box sx={{ position: 'relative', p: 2 }}>
+      <PageHeader title={film.title} resourceType={ResourcesType.Films} />
 
       <Collapse
         title="General Info"
@@ -160,7 +159,7 @@ const FilmDetailRoot = () => {
           />
         }
       />
-    </>
+    </Box>
   )
 }
 

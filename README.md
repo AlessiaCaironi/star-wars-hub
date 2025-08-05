@@ -82,4 +82,3 @@ This repository is a fork of [amitmtrn/swapi-ts](https://github.com/amitmtrn/swa
 ## Future Improvements
 
 - Add a search feature to filter resources by type (e.g., characters, planets, etc.) and by name or title
-- Add a badge to the details pages to indicate the type of resource (e.g., character, planet, etc.)
