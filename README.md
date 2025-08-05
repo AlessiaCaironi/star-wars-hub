@@ -43,8 +43,8 @@ Star Wars Hub is a React application that lets you explore the Star Wars univers
 
 ### Prerequisites
 
-- Node.js (see `.nvmrc` for recommended version)
-- [pnpm](https://pnpm.io/) package manager
+- **Node.js** (see `.nvmrc` file for recommended version). Use the Node Version Manager [nvm](https://github.com/nvm-sh/nvm) to install and manage Node.js versions. For windows users, you can use [nvm-windows](https://github.com/coreybutler/nvm-windows).
+- **pnpm** package manager. To install pnpm follow the instructions on the [pnpm website](https://pnpm.io/installation).
 
 ### Installation
 
