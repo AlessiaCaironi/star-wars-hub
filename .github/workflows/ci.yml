@@ -1,0 +1,63 @@
+name: CI
+
+# Event -> trigger that starts a workflow
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+    workflow_dispatch: # allow manual trigger
+
+# handle concurrency between runs
+concurrency:
+    # ref -> branch or tag that triggered the workflow
+    group: ci-${{ github.ref }}
+    # only one run at a time for a specific ref (branch or tag)
+    # if you push multiple commits quickly to the same branch,
+    # only the latest run will continue, the others will be cancelled
+    cancel-in-progress: true
+
+# Jobs -> collection of steps to run on the same runner
+jobs:
+    # jobs run in parallel by default
+    # use need: to create dependencies between jobs
+    lint-and-build:
+        name: Lint & Build # unique name for the job
+        runs-on: ubuntu-latest # runner (github-hosted)
+        permissions:
+            contents: read
+        # Step -> individual action or shell command (executed in order)
+        # Action -> reusable step packaged by GitHub or community
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4 # pull the code
+
+            # align Node version and configure pnpm dependency cache
+            - name: Setup Node.js from .nvmrc
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: ".nvmrc"
+                  cache: "pnpm"
+
+            # Install pnpm
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 9
+                  # avoid automatic install of dependencies (handled in next step)
+                  run_install: false
+
+            # install dependencies (--frozen-lockfile to ensure consistency with lockfile)
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Run ESLint
+              run: pnpm lint
+
+            - name: Build project
+              run: pnpm build
+
+        # env vars
+        env:
+            # strict mode for CI environments
+            CI: true
