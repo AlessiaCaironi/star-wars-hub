@@ -29,35 +29,25 @@ jobs:
         # Step -> individual action or shell command (executed in order)
         # Action -> reusable step packaged by GitHub or community
         steps:
-            - name: Checkout repository
+            - name: Checkout
               uses: actions/checkout@v4 # pull the code
 
-            # align Node version and configure pnpm dependency cache
-            - name: Setup Node.js from .nvmrc
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  package_json_file: ./package.json
+
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version-file: ".nvmrc"
+                  node-version-file: .nvmrc
+                  cache: pnpm
+                  cache-dependency-path: "**/pnpm-lock.yaml"
 
-            # Enable pnpm via Corepack so the CLI is always available on the runner
-            - name: Enable pnpm (Corepack)
-              run: |
-                  corepack enable
-                  corepack prepare pnpm@10 --activate
-
-            # Enable pnpm cache
-            - name: Setup pnpm cache
-              uses: actions/cache@v4
-              with:
-                  path: ~/.local/share/pnpm
-                  key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-                  restore-keys: |
-                      ${{ runner.os }}-pnpm-
-
-            # install dependencies (--frozen-lockfile to ensure consistency with lockfile)
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+              run: pnpm install
 
-            - name: Run ESLint
+            - name: Linting
               run: pnpm lint
 
             - name: Build project
