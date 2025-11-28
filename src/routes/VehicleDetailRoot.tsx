@@ -1,13 +1,7 @@
 import { Box, Grid, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import {
-  type IFilm,
-  type IPeople,
-  type IVehicle,
-  ResourcesType,
-  Vehicles,
-} from 'swapi-ts'
+import { type IFilm, type IPeople, ResourcesType, Vehicles } from 'swapi-ts'
 
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
@@ -25,31 +19,19 @@ import UnorderedList from '../components/UnorderedList'
  */
 const VehicleDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
-  const [vehicle, setVehicle] = useState<IVehicle>()
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!id) return
+  const query = useQuery({
+    queryKey: ['vehicle', id],
+    queryFn: async () => {
+      const res = await Vehicles.find((v) => v.url.endsWith(`/${id}/`))
+      await res.populateAll('pilots')
+      await res.populateAll('films')
+      return res.resources[0].value
+    },
+  })
+  const { data: vehicle, isLoading } = query
 
-    Vehicles.find((v) => v.url.endsWith(`/${id}/`))
-      .then(async (res) => {
-        const vehicleResource = res.resources[0]
-        if (!vehicleResource) return
-
-        await vehicleResource.populate('pilots')
-        await vehicleResource.populate('films')
-
-        setVehicle(vehicleResource.value)
-      })
-      .catch((err) => {
-        console.error('Error loading vehicle:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
-
-  if (loading || !vehicle) return <Loading />
+  if (isLoading || !vehicle) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>

@@ -1,8 +1,7 @@
 import { Box, Grid, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import {
-  type IFilm,
   type IPeople,
   type IPlanet,
   type ISpecie,
@@ -32,34 +31,22 @@ import { toRoman } from '../utils/toRoman'
  */
 const FilmDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
-  const [film, setFilm] = useState<IFilm>()
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!id) return
+  const query = useQuery({
+    queryKey: ['film', id],
+    queryFn: async () => {
+      const res = await Films.find((f) => f.url.endsWith(`/${id}/`))
+      await res.populateAll('characters')
+      await res.populateAll('planets')
+      await res.populateAll('starships')
+      await res.populateAll('vehicles')
+      await res.populateAll('species')
+      return res.resources[0].value
+    },
+  })
+  const { data: film, isLoading } = query
 
-    Films.find((f) => f.url.endsWith(`/${id}/`))
-      .then(async (res) => {
-        const filmResource = res.resources[0]
-        if (!filmResource) return
-
-        await filmResource.populate('characters')
-        await filmResource.populate('planets')
-        await filmResource.populate('starships')
-        await filmResource.populate('vehicles')
-        await filmResource.populate('species')
-
-        setFilm(filmResource.value)
-      })
-      .catch((err) => {
-        console.error('Error loading film:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
-
-  if (loading || !film) return <Loading />
+  if (isLoading || !film) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>

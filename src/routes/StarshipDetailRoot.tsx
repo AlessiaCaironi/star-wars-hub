@@ -1,13 +1,7 @@
 import { Box, Grid, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import {
-  type IFilm,
-  type IPeople,
-  type IStarship,
-  ResourcesType,
-  Starships,
-} from 'swapi-ts'
+import { type IFilm, type IPeople, ResourcesType, Starships } from 'swapi-ts'
 
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
@@ -25,31 +19,20 @@ import UnorderedList from '../components/UnorderedList'
  */
 const StarshipDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
-  const [starship, setStarship] = useState<IStarship>()
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!id) return
+  const query = useQuery({
+    queryKey: ['starship', id],
+    queryFn: async () => {
+      const res = await Starships.find((s) => s.url.endsWith(`/${id}/`))
+      await res.populateAll('pilots')
+      await res.populateAll('films')
 
-    Starships.find((s) => s.url.endsWith(`/${id}/`))
-      .then(async (res) => {
-        const starshipResource = res.resources[0]
-        if (!starshipResource) return
+      return res.resources[0].value
+    },
+  })
+  const { data: starship, isLoading } = query
 
-        await starshipResource.populate('pilots')
-        await starshipResource.populate('films')
-
-        setStarship(starshipResource.value)
-      })
-      .catch((err) => {
-        console.error('Error loading starship:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
-
-  if (loading || !starship) return <Loading />
+  if (isLoading || !starship) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>

@@ -1,13 +1,7 @@
 import { Box, Grid, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import {
-  type IFilm,
-  type IPeople,
-  type ISpecie,
-  ResourcesType,
-  Species,
-} from 'swapi-ts'
+import { type IFilm, type IPeople, ResourcesType, Species } from 'swapi-ts'
 
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
@@ -27,31 +21,20 @@ import UnorderedList from '../components/UnorderedList'
  */
 const SpeciesDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
-  const [species, setSpecies] = useState<ISpecie>()
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!id) return
+  const query = useQuery({
+    queryKey: ['species', id],
+    queryFn: async () => {
+      const res = await Species.find((s) => s.url.endsWith(`/${id}/`))
+      await res.populateAll('people')
+      await res.populateAll('films')
 
-    Species.find((s) => s.url.endsWith(`/${id}/`))
-      .then(async (res) => {
-        const speciesResource = res.resources[0]
-        if (!speciesResource) return
+      return res.resources[0].value
+    },
+  })
+  const { data: species, isLoading } = query
 
-        await speciesResource.populate('people')
-        await speciesResource.populate('films')
-
-        setSpecies(speciesResource.value)
-      })
-      .catch((err) => {
-        console.error('Error loading species:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
-
-  if (loading || !species) return <Loading />
+  if (isLoading || !species) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>

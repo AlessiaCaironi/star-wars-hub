@@ -1,9 +1,8 @@
 import { Box, Grid, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import {
   type IFilm,
-  type IPeople,
   type IPlanet,
   type ISpecie,
   type IStarship,
@@ -31,34 +30,22 @@ import UnorderedList from '../components/UnorderedList'
  */
 const PersonDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
-  const [person, setPerson] = useState<IPeople>()
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!id) return
+  const query = useQuery({
+    queryKey: ['person', id],
+    queryFn: async () => {
+      const res = await People.find((p) => p.url.endsWith(`/${id}/`))
+      await res.populateAll('films')
+      await res.populateAll('vehicles')
+      await res.populateAll('starships')
+      await res.populateAll('homeworld')
+      await res.populateAll('species')
+      return res.resources[0].value
+    },
+  })
+  const { data: person, isLoading } = query
 
-    People.find((p) => p.url.endsWith(`/${id}/`))
-      .then(async (res) => {
-        const personResource = res.resources[0]
-        if (!personResource) return
-
-        await personResource.populate('films')
-        await personResource.populate('vehicles')
-        await personResource.populate('starships')
-        await personResource.populate('homeworld')
-        await personResource.populate('species')
-
-        setPerson(personResource.value)
-      })
-      .catch((err) => {
-        console.error('Error loading person:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
-
-  if (loading || !person) return <Loading />
+  if (isLoading || !person) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>

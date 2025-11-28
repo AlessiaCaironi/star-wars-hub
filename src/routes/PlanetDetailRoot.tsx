@@ -1,13 +1,7 @@
 import { Box, Grid, Stack } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
-import {
-  type IFilm,
-  type IPeople,
-  type IPlanet,
-  Planets,
-  ResourcesType,
-} from 'swapi-ts'
+import { type IFilm, type IPeople, Planets, ResourcesType } from 'swapi-ts'
 
 import Collapse from '../components/Collapse'
 import InfoRow from '../components/InfoRow'
@@ -27,31 +21,19 @@ import UnorderedList from '../components/UnorderedList'
  */
 const PlanetDetailRoot = () => {
   const { id } = useParams<{ id: string }>()
-  const [planet, setPlanet] = useState<IPlanet>()
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!id) return
+  const query = useQuery({
+    queryKey: ['planet', id],
+    queryFn: async () => {
+      const res = await Planets.find((p) => p.url.endsWith(`/${id}/`))
+      await res.populateAll('residents')
+      await res.populateAll('films')
+      return res.resources[0].value
+    },
+  })
+  const { data: planet, isLoading } = query
 
-    Planets.find((p) => p.url.endsWith(`/${id}/`))
-      .then(async (res) => {
-        const planetResource = res.resources[0]
-        if (!planetResource) return
-
-        await planetResource.populate('residents')
-        await planetResource.populate('films')
-
-        setPlanet(planetResource.value)
-      })
-      .catch((err) => {
-        console.error('Error loading planet:', err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
-
-  if (loading || !planet) return <Loading />
+  if (isLoading || !planet) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>
