@@ -6,9 +6,9 @@ import {
   Grid,
   Typography,
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { IFilm } from 'swapi-ts'
 import { Films } from 'swapi-ts'
 
 import Loading from '../components/Loading'
@@ -28,19 +28,15 @@ import { buildPath, extractIdFromUrl } from '../utils/navigation'
  * @returns {JSX.Element} The rendered film list UI.
  */
 const FilmListRoot = () => {
-  const [films, setFilms] = useState<IFilm[]>()
   const [sortBy, setSortBy] = useState<SortOption>('episode')
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    Films.getPage()
-      .then((page) => setFilms(page.results))
-      .catch((err) => {
-        console.error('Error loading films:', err)
-      })
-      .finally(() => setLoading(false))
-  }, [])
+  const query = useQuery({
+    queryKey: ['films'],
+    queryFn: () => Films.getPage(),
+  })
+  const { data, isLoading } = query
+  const films = data?.results || []
 
   const sortedFilms =
     films && films.length > 0
@@ -61,7 +57,7 @@ const FilmListRoot = () => {
         })
       : []
 
-  if (loading) return <Loading />
+  if (isLoading) return <Loading />
 
   return (
     <Box sx={{ position: 'relative', p: 2 }}>

@@ -8,6 +8,7 @@ import {
   ThemeProvider,
   Toolbar,
 } from '@mui/material'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Link } from 'react-router-dom'
 
 import { routes } from './router/config'
@@ -24,30 +25,34 @@ import { darkTheme } from './theme'
  * @returns {JSX.Element} The rendered application container.
  */
 const App = () => {
+  const queryClient = new QueryClient()
+
   return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <Container>
-        <BrowserRouter>
-          <AppBar
-            position="static"
-            sx={{ mb: 1, mt: 1, background: 'none', boxShadow: 'none' }}
-          >
-            <Toolbar className="toolbar">
-              <Box component={Link} to={locations.home} className="logo-link">
-                <Box
-                  component="img"
-                  src="/star_wars_hub.png"
-                  alt="Star Wars Hub"
-                  className="logo-img"
-                />
-              </Box>
-            </Toolbar>
-          </AppBar>
-          <Router routes={routes} />
-        </BrowserRouter>
-      </Container>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Container>
+          <BrowserRouter>
+            <AppBar
+              position="static"
+              sx={{ mb: 1, mt: 1, background: 'none', boxShadow: 'none' }}
+            >
+              <Toolbar className="toolbar">
+                <Box component={Link} to={locations.home} className="logo-link">
+                  <Box
+                    component="img"
+                    src="/star_wars_hub.png"
+                    alt="Star Wars Hub"
+                    className="logo-img"
+                  />
+                </Box>
+              </Toolbar>
+            </AppBar>
+            <Router routes={routes} />
+          </BrowserRouter>
+        </Container>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
 
