@@ -38,14 +38,13 @@ jobs:
               with:
                   node-version-file: ".nvmrc"
                   cache: "pnpm"
+                  cache-dependency-path: pnpm-lock.yaml
 
-            # Install pnpm
-            - name: Install pnpm
-              uses: pnpm/action-setup@v4
-              with:
-                  version: 9
-                  # avoid automatic install of dependencies (handled in next step)
-                  run_install: false
+            # Enable pnpm via Corepack so the CLI is always available on the runner
+            - name: Enable pnpm
+              run: |
+                  corepack enable pnpm
+                  corepack prepare pnpm@9 --activate
 
             # install dependencies (--frozen-lockfile to ensure consistency with lockfile)
             - name: Install dependencies
